@@ -5,20 +5,21 @@ services:
     build: .
     command: bash start.sh
     volumes:
-      - .:/code
+        - .:/code
     ports:
-      - 8000:8000
+        - 8000:8000
     depends_on:
-      - db
+        - db
     env_file:
-      ./.env
+        ./.env
   db:
     image: postgres:13
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+        - postgres_data:/var/lib/postgresql/data/
+    ports:
+        - "5432:5432"
+    env_file:
+        - ./.env
 
 volumes:
-  postgres_data:
+    postgres_data:
