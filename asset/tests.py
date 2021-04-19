@@ -1,4 +1,5 @@
 from django.test import TestCase
+from .forms import *
 from .models import *
 # Create your tests here.
 #Models
@@ -53,3 +54,38 @@ class LogoutViewTestCase(TestCase):
     def test_status_code_302(self):
         response = self.client.get(reverse('logout'))
         self.assertEquals(response.status_code, 302)
+
+#forms
+class TestUserCreationForm(TestCase):
+    def test_fields_label(self):
+        form = UserCreationForm()
+        self.assertTrue(form.fields['email'].label == 'Email')
+        self.assertTrue(form.fields['first_name'].label == 'First Name')
+        self.assertTrue(form.fields['last_name'].label == 'Last Name')
+    
+    def test_valid_user(self):
+        form = UserCreationForm(data = {
+            'username' : 'test',
+            'first_name' : 'Test First Name',
+            'last_name' : 'Test Last Name',
+            'email' : 'testemail@test.com',
+            'password1':'Test1034', 
+            'password2':'Test1034'
+        })
+        self.assertTrue(form.is_valid())
+        us = form.save()
+        self.assertTrue(User.objects.filter(username = 'test').exists())
+        us.delete()
+        self.assertFalse(User.objects.filter(username = 'test').exists())
+    
+    def test_invalid_user(self):
+        form = UserCreationForm(data = {
+            'username' : 'test',
+            'first_name' : 'Test First Name',
+            'last_name' : 'Test Last Name',
+            'email' : 'test',
+            'password1':'1234', 
+            'password2':'1234'
+        })
+        self.assertFalse(form.is_valid())
+        self.assertFalse(User.objects.filter(username = 'test').exists())

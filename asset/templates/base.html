@@ -11,11 +11,11 @@
         {% else %}
             <a class="active" href="{% url 'home' %}" >Home</a>
             <a href="{% url 'login' %}">Login</a>
-            
+            <a href="{% url 'register' %}">Register</a>
         {% endif %}
     </div>
     <body>
-        <h1>{{ user.username }}</h1>
+        <h1>{{ user.first_name }} {{ user.last_name }}</h1>
     </body>
     {% block main %}
     {% endblock %}
