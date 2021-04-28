@@ -6,6 +6,7 @@ from django.views.generic import View, TemplateView, CreateView, ListView, Redir
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
+# import pandas as pd
 # Create your views here.
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -46,6 +47,15 @@ class RegisterView(View):
             return redirect('home')
         form = self.form_class()
         return render(request, self.template_name, {'form' : form})
+    
+class AssetsView(View):
+    tickers_list = []
+    # tickers_df = pd.read_csv("data/tickers.csv", sep = ';')
+    # tickers_list = tickers_df['TckrSymb'].tolist()
+    template_name = 'assets.html'
+    def get(self, request):
+        return render(request, self.template_name, {'tickers' : self.tickers_list})
+        
 
 
 

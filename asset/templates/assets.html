@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{%block main %}
+    {% for ticker in tickers %}
+        <p>{{ ticker }}</p>
+    {% endfor %}
+{% endblock main %}
