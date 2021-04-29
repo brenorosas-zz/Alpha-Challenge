@@ -40,6 +40,22 @@ class LoginViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         us.delete()
 
+class RegisterViewTestCase(TestCase):
+    def test_status_code_200(self):
+        response = self.client.get(reverse('register'))
+        self.assertEquals(response.status_code, 200)
+    
+    def test_template_used(self):
+        response = self.client.get(reverse('register'))
+        self.assertTemplateUsed(response,'base.html')
+        self.assertTemplateUsed(response,'register.html')
+    
+    def test_post(self):
+        response = self.client.post(reverse('register'), data={'first_name' : 'test', 'last_name' : 'test', 'email' : 'test@test.com','username' : 'test', 'password1' : 'Axksd32x', 'password2' : 'Axksd32x'}, follow = True)
+        self.assertTemplateUsed(response, 'base.html')
+        self.assertTemplateUsed(response, 'home.html')
+        self.assertRedirects(response=response, expected_url = reverse('home'))
+
 class HomeViewTestCase(TestCase):
     def test_status_code_200(self):
         response = self.client.get(reverse('home'))
@@ -53,8 +69,25 @@ class HomeViewTestCase(TestCase):
 class LogoutViewTestCase(TestCase):
     def test_status_code_302(self):
         response = self.client.get(reverse('logout'))
-        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.status_code, 302)    
 
+class AssetsViewTestCase(TestCase):
+    def test_status_code_200(self):
+        response = self.client.get(reverse('assets'))
+        self.assertEquals(response.status_code, 200)
+
+class MonitoringViewTestCase(TestCase):
+    def test_status(self):
+        us = User.objects.create(username = 'test')
+        us.set_password('test')
+        us.save()
+        self.client.login(username='test', password='test')
+        response = self.client.get(reverse('monitoring'))
+        self.assertTemplateUsed(response, 'base.html')
+        self.assertTemplateUsed(response, 'monitoring.html')
+        self.assertEquals(response.status_code, 200)
+        self.client.logout()
+        us.delete()
 #forms
 class TestUserCreationForm(TestCase):
     def test_fields_label(self):
@@ -89,3 +122,18 @@ class TestUserCreationForm(TestCase):
         })
         self.assertFalse(form.is_valid())
         self.assertFalse(User.objects.filter(username = 'test').exists())
+
+class TestAssetForm(TestCase):
+    def test_fields_label(self):
+        form = AssetForm()
+        self.assertTrue(form.fields['update_time'].label == 'Update time')
+        self.assertTrue(form.fields['inferior_limit'].label == 'Inferior limit')
+        self.assertTrue(form.fields['upper_limit'].label == 'Upper limit')
+
+    def test_valid_asset(self):
+        form = AssetForm(data = {
+            'update_time' : 62,
+            'inferior_limit' : 34.22,
+            'upper_limit' : 47.25
+        })
+        self.assertTrue(form.is_valid())
