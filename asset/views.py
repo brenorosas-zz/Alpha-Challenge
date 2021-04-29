@@ -73,7 +73,18 @@ class DetailAssetView(View):
         kwargs['form'] = form
         return render(request, self.template_name, kwargs)
         
-# class MonitoringView(View):
-#     template_name = "monitoring.html"
+class MonitoringView(View):
+    template_name = "monitoring.html"
+    def get(self, request):
+        assets = User.objects.get(id = request.user.id).asset_set.all()
+        return render(request, self.template_name, {'assets': assets})
 
+class RemoveAssetView(RedirectView):
+    def get(self, request, *args, **kwargs):
+        asset = Asset.objects.get(id = kwargs['id'])
+        asset.delete()
+        return redirect('monitoring')
 
+class SettingsAssetView(View):
+    template_name = "settings.html"
+    

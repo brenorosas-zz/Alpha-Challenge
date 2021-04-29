@@ -23,6 +23,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name = 'logout'),
     path('register/', RegisterView.as_view(), name = 'register'),
     path('assets/', AssetsView.as_view(), name = 'assets'),
-    path('assets/<str:ticker>/', DetailAssetView.as_view(), name = 'detail_asset')
+    path('assets/<str:ticker>/', DetailAssetView.as_view(), name = 'detail_asset'),
+    path('monitoring/', MonitoringView.as_view(), name = 'monitoring'),
+    path('remove/<str:id>/', RemoveAssetView.as_view(), name = 'remove'),
 ]
 
