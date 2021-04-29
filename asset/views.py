@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from .forms import UserCreationForm
+from .forms import UserCreationForm, AssetForm
 from django.contrib.auth import logout, login
 from django.views.generic import View, TemplateView, CreateView, ListView, RedirectView
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
-# import pandas as pd
+import pandas as pd
 # Create your views here.
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -50,13 +50,30 @@ class RegisterView(View):
     
 class AssetsView(View):
     tickers_list = []
-    # tickers_df = pd.read_csv("data/tickers.csv", sep = ';')
-    # tickers_list = tickers_df['TckrSymb'].tolist()
+    tickers_df = pd.read_csv("data/tickers.csv", sep = ';')
+    tickers_list = tickers_df['TckrSymb'].tolist()
     template_name = 'assets.html'
     def get(self, request):
         return render(request, self.template_name, {'tickers' : self.tickers_list})
+
+class DetailAssetView(View):
+    template_name = 'detail_asset.html'
+    form_class = AssetForm
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        kwargs['form'] = form
+        return render(request, self.template_name, kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(data = request.POST)
+        if form.is_valid():
+            form.save(ticker = kwargs['ticker'], id = request.user.id)
+            return redirect('home')
+        form = self.form_class()
+        kwargs['form'] = form
+        return render(request, self.template_name, kwargs)
         
-
-
+# class MonitoringView(View):
+#     template_name = "monitoring.html"
 
 

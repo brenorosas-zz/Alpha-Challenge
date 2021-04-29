@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{%block main %}
+    {{ ticker }}
+    {% if form.errors %}
+        <p>Something went wrong, check if all values are positive and if the upper limit is bigger than the inferior limit</p>
+    {% endif %}
+    <form method="post" action={% url 'detail_asset' ticker%}>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Monitor Asset">
+    </form>
+{% endblock main %}
