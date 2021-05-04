@@ -91,6 +91,3 @@ class RemoveAssetView(RedirectView):
         asset = Asset.objects.get(id = kwargs['id'])
         asset.delete()
         return redirect('monitoring')
-
-class SettingsAssetView(View):
-    template_name = "settings.html"

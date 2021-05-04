@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .forms import *
 from .models import *
+from django.utils import timezone
 # Create your tests here.
 #Models
 class AssetTestCase(TestCase):
@@ -20,6 +21,25 @@ class AssetTestCase(TestCase):
         as1 = Asset.objects.get(name = 'NameTest')
         self.assertEquals(as1.__str__(), 'NameTest')
 
+class ManagementTestCase(TestCase):
+    def setUp(self):
+        us = User.objects.create(username = 'test')
+        us.set_password('test')
+        us.save()
+        ast = Asset.objects.create(
+            name = 'NameTest',
+            user = us,
+            update_time = 60,
+            inferior_limit = 29.50,
+            upper_limit = 129.50
+        )
+        ast.save()
+        Management.objects.create(
+            asset = ast,
+            next_time = timezone.now()
+        )
+        mng = Management.objects.get(asset = ast)
+        self.assertEquals(mng.__str__(), ast)
 #views
 class LoginViewTestCase(TestCase):
     def test_status_code_200(self):
