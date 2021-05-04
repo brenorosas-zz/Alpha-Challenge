@@ -32,15 +32,14 @@ def calculate_next_monitoring_date(asset):
 
 
 def monitor_asset(asset):
-    try:
-        tckrSymb = asset.name + '.SA'
-        ticker = yf.Ticker(tckrSymb)
-        historical_ticker = ticker.history(period = "1d", interval = "1m")
-        price = pd.DataFrame(historical_ticker)['Open'].iloc[-1]
-        if price >= asset.upper_limit:
-            send_email(asset.user.email, asset, description = "superior", price = price)
-        elif price <= asset.inferior_limit:
-            send_email(asset.user.email, asset, description = "inferior", price = price)
+    tckrSymb = asset.name + '.SA'
+    ticker = yf.Ticker(tckrSymb)
+    historical_ticker = ticker.history(period = "1d", interval = "1m")
+    price = pd.DataFrame(historical_ticker)['Open'].iloc[-1]
+    if price >= asset.upper_limit:
+        send_email(asset.user.email, asset, description = "superior", price = price)
+    elif price <= asset.inferior_limit:
+        send_email(asset.user.email, asset, description = "inferior", price = price)
 
 @task(schedule = 1)
 def check_next_monitor():
