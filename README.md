@@ -86,3 +86,7 @@ Ao clicar no botão "Remove Asset" o mesmo irá parar de ser monitorado e sairá
 
 #### Deslogando do site.
 Estando logado, no canto superior direito haverá um botão de "Logout", apenas clique no mesmo e você será redirecionado para home page.
+
+#### Data
+
+A lista dos tickers foi pega no site da [B3](http://www.b3.com.br/pt_br/produtos-e-servicos/emprestimo-de-ativos/renda-variavel/negocio-a-negocio/), fazendo o download do histórico de 4 dias dos negócios de renda variável. Para monitoramento dos valores foi usado a biblioteca [yfinance](https://pypi.org/project/yfinance/).
