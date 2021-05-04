@@ -1,6 +1,6 @@
 # Alpha-Challenge
 
-Esse projeto do processo seletivo para estágio na Inoa sistemas.
+Projeto do processo seletivo para estágio na Inoa sistemas.
 
 # Requisitos
 
