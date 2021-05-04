@@ -3,7 +3,7 @@
     {% for asset in assets %}
         <article>
             <p>{{ asset.name }}</p>
-            <p>Update Time in seconds: {{ asset.update_time }}</p>
+            <p>Update Time in minutes: {{ asset.update_time }}</p>
             <p>Inferior limit: {{ asset.inferior_limit}}</p>
             <p>Upper limit: {{ asset.upper_limit }}</p>
             <form method="get" action={% url 'remove' asset.id%}>

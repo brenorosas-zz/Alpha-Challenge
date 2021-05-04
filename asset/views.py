@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 import pandas as pd
+from .tasks import calculate_next_monitoring_date
+
 # Create your views here.
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -67,7 +69,12 @@ class DetailAssetView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(data = request.POST)
         if form.is_valid():
-            form.save(ticker = kwargs['ticker'], id = request.user.id)
+            asset = form.save(ticker = kwargs['ticker'], id = request.user.id)
+            as1 = Management.objects.create(
+                asset = asset,
+                next_time = calculate_next_monitoring_date(asset)
+            )
+            as1.save()
             return redirect('home')
         form = self.form_class()
         kwargs['form'] = form
@@ -87,4 +94,3 @@ class RemoveAssetView(RedirectView):
 
 class SettingsAssetView(View):
     template_name = "settings.html"
-    

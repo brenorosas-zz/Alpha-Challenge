@@ -2,6 +2,8 @@ asgiref==3.3.4
 certifi==2020.12.5
 chardet==4.0.0
 Django==3.2
+django-compat==1.0.15
+django-workers==0.2.0
 idna==2.10
 lxml==4.6.3
 multitasking==0.0.9

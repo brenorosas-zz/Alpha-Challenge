@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.exceptions import ValidationError
-from .models import Asset
+from .models import *
 
 
 class UserCreationForm(UserCreationForm):
@@ -51,3 +51,4 @@ class AssetForm(forms.ModelForm):
         )
         if commit:
             asset.save()
+        return asset
