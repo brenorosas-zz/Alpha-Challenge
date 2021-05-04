@@ -10,3 +10,7 @@ class Asset(models.Model):
     upper_limit = models.DecimalField(max_digits=11, decimal_places=2, null=True)
     def __str__(self):
         return self.name
+
+class Management(models.Model):
+    asset = models.ForeignKey(Asset, on_delete = models.CASCADE)
+    next_time = models.DateTimeField(db_index = True)
